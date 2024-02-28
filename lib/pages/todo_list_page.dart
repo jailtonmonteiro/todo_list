@@ -163,7 +163,7 @@ class _TodoListPageState extends State<TodoListPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Apagar Tudo?'),
+        title: const Text('Apagar tudo?'),
         content:
             const Text('Você tem certeza que deseja apagar todas as tarefas?'),
         actions: [
