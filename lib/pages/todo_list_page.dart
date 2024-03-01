@@ -12,12 +12,25 @@ class TodoListPage extends StatefulWidget {
 
 class _TodoListPageState extends State<TodoListPage> {
   final TextEditingController todoController = TextEditingController();
-  final TarefaRepository todoRepository = TarefaRepository();
+  final TarefaRepository tarefaRepository = TarefaRepository();
 
   List<Todo> tarefas = [];
 
   Todo? deleteTarefa;
   int? deleteTarefaPos;
+
+  @override
+  void initState() {
+    super.initState();
+
+    tarefaRepository.getListaTarefa().then(
+      (value) {
+        setState(() {
+          tarefas = value;
+        });
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,17 +60,15 @@ class _TodoListPageState extends State<TodoListPage> {
                     ElevatedButton(
                       onPressed: () {
                         String text = todoController.text;
-                        setState(
-                          () {
-                            Todo newTodo = Todo(
-                              title: text,
-                              dateTime: DateTime.now(),
-                            );
-                            tarefas.add(newTodo);
-                            todoController.clear();
-                            todoRepository.saveTarefas(tarefas);
-                          },
-                        );
+                        setState(() {
+                          Todo newTodo = Todo(
+                            title: text,
+                            dateTime: DateTime.now(),
+                          );
+                          tarefas.add(newTodo);
+                        });
+                        todoController.clear();
+                        tarefaRepository.saveTarefas(tarefas);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blueAccent,
