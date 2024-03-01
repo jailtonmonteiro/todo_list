@@ -15,20 +15,6 @@ class TodoListItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Slidable(
         key: const ValueKey(0),
-        startActionPane: ActionPane(
-          motion: const DrawerMotion(),
-          extentRatio: 0.25,
-          children: [
-            SlidableAction(
-              onPressed: null,
-              backgroundColor: Colors.green,
-              foregroundColor: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-              icon: Icons.check,
-              label: 'Feito',
-            ),
-          ],
-        ),
         endActionPane: ActionPane(
           motion: const DrawerMotion(),
           extentRatio: 0.25,
