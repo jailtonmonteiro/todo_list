@@ -15,21 +15,18 @@ class _TodoListPageState extends State<TodoListPage> {
   final TarefaRepository tarefaRepository = TarefaRepository();
 
   List<Todo> tarefas = [];
-
   Todo? deleteTarefa;
   int? deleteTarefaPos;
+  String? errorMsg;
 
   @override
   void initState() {
     super.initState();
-
-    tarefaRepository.getListaTarefa().then(
-      (value) {
-        setState(() {
-          tarefas = value;
-        });
-      },
-    );
+    tarefaRepository.getListaTarefa().then((value) {
+      setState(() {
+        tarefas = value;
+      });
+    });
   }
 
   @override
@@ -47,10 +44,20 @@ class _TodoListPageState extends State<TodoListPage> {
                     Expanded(
                       child: TextField(
                         controller: todoController,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
+                        decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
                           labelText: 'Adicione uma tarefa',
                           hintText: 'Ex. Lavar o carro',
+                          errorText: errorMsg,
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.blueAccent,
+                              width: 3,
+                            ),
+                          ),
+                          labelStyle: const TextStyle(
+                            color: Colors.blueAccent,
+                          ),
                         ),
                       ),
                     ),
@@ -60,6 +67,12 @@ class _TodoListPageState extends State<TodoListPage> {
                     ElevatedButton(
                       onPressed: () {
                         String text = todoController.text;
+                        if (text.isEmpty) {
+                          setState(() {
+                            errorMsg = 'O campo não pode ser vazio!';
+                          });
+                          return;
+                        }
                         setState(() {
                           Todo newTodo = Todo(
                             title: text,
@@ -150,6 +163,7 @@ class _TodoListPageState extends State<TodoListPage> {
     setState(() {
       tarefas.remove(tarefa);
     });
+    tarefaRepository.saveTarefas(tarefas);
 
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
@@ -163,6 +177,7 @@ class _TodoListPageState extends State<TodoListPage> {
             setState(() {
               tarefas.insert(deleteTarefaPos!, deleteTarefa!);
             });
+            tarefaRepository.saveTarefas(tarefas);
           },
         ),
         content: Text(
@@ -211,5 +226,6 @@ class _TodoListPageState extends State<TodoListPage> {
       tarefas.clear();
     });
     Navigator.of(context).pop();
+    tarefaRepository.saveTarefas(tarefas);
   }
 }
