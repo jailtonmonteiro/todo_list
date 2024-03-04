@@ -33,6 +33,13 @@ class _TodoListPageState extends State<TodoListPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'Lista de Tarefas',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+          ),
+          backgroundColor: Colors.blueAccent,
+        ),
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(8),
